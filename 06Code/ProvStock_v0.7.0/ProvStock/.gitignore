@@ -1,0 +1,21 @@
+# Maven build output
+target/
+
+# Data and reports generated when the program runs
+data/
+reports/
+
+# Compiled classes
+*.class
+
+# IDE files
+nbproject/
+nbactions.xml
+nb-configuration.xml
+.idea/
+*.iml
+.vscode/
+
+# Operating system files
+.DS_Store
+Thumbs.db
