@@ -125,7 +125,7 @@ public class ProvStockApp {
             return false;
         }
         User user = accessManager.getCurrentUser();
-        System.out.println("\nBienvenido/a, " + user.getFullName() + " (" + user.getRole().getName() + ")");
+        System.out.println("\nBienvenido/a, " + user.getFullName() + " (" + user.getRole().getLabel() + ")");
         warnLowStockAtLogin();
         return true;
     }

@@ -4,7 +4,6 @@ import ec.edu.espe.provstock.utils.Money;
 import java.math.BigDecimal;
 import java.time.LocalDateTime;
 import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.Collections;
 import java.util.List;
 
@@ -15,22 +14,17 @@ import java.util.List;
  */
 public class Sale {
 
-    //N2: allowed values of paymentMethod and status
-    public static final String[] PAYMENT_METHODS = {"CASH", "TRANSFER", "CARD"};
-    public static final String REGISTERED = "REGISTERED";
-    public static final String VOIDED = "VOIDED";
-
     private int number;
     private LocalDateTime dateTime;
     private User registeredBy;
     private Customer customer;
     private List<SaleDetail> details;
-    private String paymentMethod;
+    private PaymentMethod paymentMethod;
     private BigDecimal vatRate;
     private BigDecimal subtotal;
     private BigDecimal vatAmount;
     private BigDecimal total;
-    private String status;
+    private SaleStatus status;
     private String voidReason;
     private LocalDateTime voidDateTime;
     private User voidedBy;
@@ -44,8 +38,8 @@ public class Sale {
         this.registeredBy = registeredBy;
         this.vatRate = vatRate;
         this.details = new ArrayList<>();
-        this.paymentMethod = "CASH";
-        this.status = REGISTERED;
+        this.paymentMethod = PaymentMethod.CASH;
+        this.status = SaleStatus.REGISTERED;
         calculateTotal();
     }
 
@@ -134,7 +128,7 @@ public class Sale {
         if (owner == null) {
             throw new IllegalArgumentException("Se necesita el usuario que anula la venta");
         }
-        this.status = VOIDED;
+        this.status = SaleStatus.VOIDED;
         this.voidReason = reason;
         this.voidDateTime = LocalDateTime.now();
         this.voidedBy = owner;
@@ -145,14 +139,14 @@ public class Sale {
      * void. Only FileManager uses it.
      */
     public void restoreVoid(String reason, LocalDateTime voidDateTime, User voidedBy) {
-        this.status = VOIDED;
+        this.status = SaleStatus.VOIDED;
         this.voidReason = reason;
         this.voidDateTime = voidDateTime;
         this.voidedBy = voidedBy;
     }
 
     public boolean isVoided() {
-        return VOIDED.equals(status);
+        return status == SaleStatus.VOIDED;
     }
 
     public boolean validate() {
@@ -162,7 +156,7 @@ public class Sale {
         if (details.isEmpty() || vatRate == null || vatRate.signum() < 0) {
             return false;
         }
-        if (!Arrays.asList(PAYMENT_METHODS).contains(paymentMethod)) {
+        if (paymentMethod == null) {
             return false;
         }
         for (SaleDetail detail : details) {
@@ -249,11 +243,11 @@ public class Sale {
         return Collections.unmodifiableList(details);
     }
 
-    public String getPaymentMethod() {
+    public PaymentMethod getPaymentMethod() {
         return paymentMethod;
     }
 
-    public void setPaymentMethod(String paymentMethod) {
+    public void setPaymentMethod(PaymentMethod paymentMethod) {
         checkEditable();
         this.paymentMethod = paymentMethod;
     }
@@ -274,7 +268,7 @@ public class Sale {
         return total;
     }
 
-    public String getStatus() {
+    public SaleStatus getStatus() {
         return status;
     }
 

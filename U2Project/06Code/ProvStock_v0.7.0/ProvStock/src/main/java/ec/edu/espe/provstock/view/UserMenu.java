@@ -67,7 +67,7 @@ public class UserMenu {
     private void updateUser() {
         User user = findUser();
         user.setFullName(input.readTextOrKeep("Nombre completo", user.getFullName()));
-        if (input.readYesNo("¿Cambiar el rol (actual: " + user.getRole().getName() + ")?")) {
+        if (input.readYesNo("¿Cambiar el rol (actual: " + user.getRole().getLabel() + ")?")) {
             user.setRole(readRole());
         }
         accessManager.updateUser(user);
@@ -92,7 +92,7 @@ public class UserMenu {
         System.out.printf("%-4s %-14s %-28s %-16s %s%n", "Id", "Usuario", "Nombre", "Rol", "Estado");
         for (User user : accessManager.getUsers()) {
             System.out.printf("%-4d %-14s %-28s %-16s %s%n", user.getId(), user.getUsername(), user.getFullName(),
-                    user.getRole().getName(), user.isActive() ? "Activo" : "Inactivo");
+                    user.getRole().getLabel(), user.isActive() ? "Activo" : "Inactivo");
         }
     }
 
@@ -100,11 +100,20 @@ public class UserMenu {
         return accessManager.findUser(input.readText("Nombre de usuario: "));
     }
 
+    /**
+     * The roles are shown with their label in Spanish (NFR-03).
+     */
     private Role readRole() {
-        String[] names = new String[accessManager.getRoles().size()];
-        for (int i = 0; i < names.length; i++) {
-            names[i] = accessManager.getRoles().get(i).getName();
+        String[] labels = new String[accessManager.getRoles().size()];
+        for (int i = 0; i < labels.length; i++) {
+            labels[i] = accessManager.getRoles().get(i).getLabel();
         }
-        return accessManager.findRole(input.readOption("Rol:", names));
+        String chosen = input.readOption("Rol:", labels);
+        for (Role role : accessManager.getRoles()) {
+            if (role.getLabel().equals(chosen)) {
+                return role;
+            }
+        }
+        throw new IllegalArgumentException("Rol no válido");
     }
 }

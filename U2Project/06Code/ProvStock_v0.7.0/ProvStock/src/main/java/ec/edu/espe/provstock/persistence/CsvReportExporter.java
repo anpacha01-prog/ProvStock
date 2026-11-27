@@ -36,8 +36,8 @@ public class CsvReportExporter {
         for (Sale sale : report.getSales()) {
             rows.add(new String[]{String.valueOf(sale.getNumber()), sale.getDateTime().format(DATE_TIME),
                 sale.getCustomer().getName(), sale.getCustomer().getIdentificationNumber(),
-                sale.getRegisteredBy().getUsername(), sale.getPaymentMethod(), CsvWriter.money(sale.getSubtotal()),
-                CsvWriter.money(sale.getVatAmount()), CsvWriter.money(sale.getTotal()), sale.getStatus()});
+                sale.getRegisteredBy().getUsername(), sale.getPaymentMethod().getLabel(), CsvWriter.money(sale.getSubtotal()),
+                CsvWriter.money(sale.getVatAmount()), CsvWriter.money(sale.getTotal()), sale.getStatus().getLabel()});
         }
         rows.add(EMPTY_ROW);
         rows.add(new String[]{"Ventas registradas", String.valueOf(report.getSalesCount())});

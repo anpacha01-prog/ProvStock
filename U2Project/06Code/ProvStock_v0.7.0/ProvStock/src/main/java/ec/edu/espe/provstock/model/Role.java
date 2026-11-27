@@ -43,6 +43,22 @@ public class Role {
         this.permissions = new ArrayList<>(permissions);
     }
 
+    /**
+     * The name in Spanish shown to the user (NFR-03); the code is kept in the files.
+     */
+    public String getLabel() {
+        switch (name) {
+            case SALESPERSON:
+                return "Vendedor";
+            case WAREHOUSE_CLERK:
+                return "Bodeguero";
+            case OWNER:
+                return "Propietario";
+            default:
+                return name;
+        }
+    }
+
     public boolean hasPermission(String permission) {
         return permissions.contains(permission);
     }

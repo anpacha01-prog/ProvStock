@@ -1,5 +1,6 @@
 package ec.edu.espe.provstock.view;
 
+import ec.edu.espe.provstock.model.Labeled;
 import ec.edu.espe.provstock.utils.Money;
 import java.math.BigDecimal;
 import java.time.LocalDate;
@@ -224,6 +225,46 @@ public class InputReader {
                 return options[option - 1];
             }
             System.out.println("  Opción no válida.");
+        }
+    }
+
+    /**
+     * Shows the labels in Spanish of the fixed values and returns the chosen one (decision D4).
+     */
+    public <E extends Labeled> E readChoice(String title, E[] options) {
+        System.out.println(title);
+        printChoices(options);
+        while (true) {
+            int option = readInt("Elija una opción: ");
+            if (option >= 1 && option <= options.length) {
+                return options[option - 1];
+            }
+            System.out.println("  Opción no válida.");
+        }
+    }
+
+    /**
+     * Like readChoice, but 0 means "all / none" and returns null.
+     */
+    public <E extends Labeled> E readOptionalChoice(String title, E[] options) {
+        System.out.println(title);
+        System.out.println("  0. (Todas / ninguna)");
+        printChoices(options);
+        while (true) {
+            int option = readInt("Elija una opción: ");
+            if (option == 0) {
+                return null;
+            }
+            if (option >= 1 && option <= options.length) {
+                return options[option - 1];
+            }
+            System.out.println("  Opción no válida.");
+        }
+    }
+
+    private void printChoices(Labeled[] options) {
+        for (int i = 0; i < options.length; i++) {
+            System.out.println("  " + (i + 1) + ". " + options[i].getLabel());
         }
     }
 

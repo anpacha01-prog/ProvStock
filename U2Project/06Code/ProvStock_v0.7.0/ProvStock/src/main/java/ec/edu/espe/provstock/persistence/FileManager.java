@@ -14,6 +14,8 @@ import ec.edu.espe.provstock.controller.ProductCatalog;
 import ec.edu.espe.provstock.controller.PurchasingManager;
 import ec.edu.espe.provstock.controller.SalesManager;
 import ec.edu.espe.provstock.model.Customer;
+import ec.edu.espe.provstock.model.MovementType;
+import ec.edu.espe.provstock.model.PaymentMethod;
 import ec.edu.espe.provstock.model.Product;
 import ec.edu.espe.provstock.model.ProductInfo;
 import ec.edu.espe.provstock.model.Purchase;
@@ -21,6 +23,7 @@ import ec.edu.espe.provstock.model.PurchaseDetail;
 import ec.edu.espe.provstock.model.Role;
 import ec.edu.espe.provstock.model.Sale;
 import ec.edu.espe.provstock.model.SaleDetail;
+import ec.edu.espe.provstock.model.SaleStatus;
 import ec.edu.espe.provstock.model.StockMovement;
 import ec.edu.espe.provstock.model.Supplier;
 import ec.edu.espe.provstock.model.User;
@@ -300,12 +303,12 @@ public class FileManager {
         json.addProperty("dateTime", formatDateTime(sale.getDateTime()));
         json.addProperty("registeredBy", sale.getRegisteredBy().getUsername());
         json.addProperty("customer", sale.getCustomer().getIdentificationNumber());
-        json.addProperty("paymentMethod", sale.getPaymentMethod());
+        json.addProperty("paymentMethod", sale.getPaymentMethod().name());
         json.addProperty("vatRate", sale.getVatRate());
         json.addProperty("subtotal", sale.getSubtotal());
         json.addProperty("vatAmount", sale.getVatAmount());
         json.addProperty("total", sale.getTotal());
-        json.addProperty("status", sale.getStatus());
+        json.addProperty("status", sale.getStatus().name());
         json.addProperty("voidReason", sale.getVoidReason());
         json.addProperty("voidDateTime", formatDateTime(sale.getVoidDateTime()));
         json.addProperty("voidedBy", sale.getVoidedBy() == null ? null : sale.getVoidedBy().getUsername());
@@ -352,7 +355,7 @@ public class FileManager {
             json.addProperty("id", movement.getId());
             json.addProperty("dateTime", formatDateTime(movement.getDateTime()));
             json.addProperty("productCode", movement.getProduct().getCode());
-            json.addProperty("type", movement.getType());
+            json.addProperty("type", movement.getType().name());
             json.addProperty("quantity", movement.getQuantity());
             json.addProperty("saleNumber", movement.getSale() == null ? null : movement.getSale().getNumber());
             json.addProperty("purchaseNumber",
@@ -449,7 +452,7 @@ public class FileManager {
             int number = readInt(json, "number");
             Sale sale = new Sale(find(data.customers, readText(json, "customer"), SALE),
                     find(data.users, readText(json, "registeredBy"), SALE), readDecimal(json, "vatRate"));
-            sale.setPaymentMethod(readText(json, "paymentMethod"));
+            sale.setPaymentMethod(PaymentMethod.valueOf(readText(json, "paymentMethod")));
             for (JsonObject line : detailsBySale.getOrDefault(number, new ArrayList<>())) {
                 sale.restoreDetail(find(data.products, readText(line, "productCode"), SALE_DETAIL),
                         readDouble(line, "quantity"), readDecimal(line, "unitPrice"));
@@ -465,7 +468,7 @@ public class FileManager {
     }
 
     private void restoreVoid(Sale sale, JsonObject json, LoadedData data) throws IOException {
-        if (Sale.VOIDED.equals(readText(json, "status"))) {
+        if (SaleStatus.valueOf(readText(json, "status")) == SaleStatus.VOIDED) {
             sale.restoreVoid(readText(json, "voidReason"), LocalDateTime.parse(readText(json, "voidDateTime")),
                     find(data.users, readText(json, "voidedBy"), SALE));
         }
@@ -510,7 +513,8 @@ public class FileManager {
             Purchase purchase = isNull(json, "purchaseNumber") ? null
                     : find(data.purchases, readInt(json, "purchaseNumber"), STOCK_MOVEMENT);
             movements.add(new StockMovement(readInt(json, "id"), LocalDateTime.parse(readText(json, "dateTime")),
-                    find(data.products, readText(json, "productCode"), STOCK_MOVEMENT), readText(json, "type"),
+                    find(data.products, readText(json, "productCode"), STOCK_MOVEMENT),
+                    MovementType.valueOf(readText(json, "type")),
                     readDouble(json, "quantity"), sale, purchase,
                     find(data.users, readText(json, "user"), STOCK_MOVEMENT), readText(json, "reason")));
         }

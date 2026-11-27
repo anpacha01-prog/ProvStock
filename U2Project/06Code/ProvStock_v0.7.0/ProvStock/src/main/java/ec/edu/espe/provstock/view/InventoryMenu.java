@@ -50,11 +50,11 @@ public class InventoryMenu {
     private void printMovements(Product product) {
         List<StockMovement> movements = inventory.getMovementsByProduct(product);
         System.out.println("Movimientos de " + product.getName() + ":");
-        System.out.printf("%-4s %-17s %-12s %10s %-12s %s%n", "Id", "Fecha", "Tipo", "Cantidad", "Usuario",
+        System.out.printf("%-4s %-17s %-14s %10s %-12s %s%n", "Id", "Fecha", "Tipo", "Cantidad", "Usuario",
                 "Referencia");
         for (StockMovement movement : movements) {
-            System.out.printf("%-4d %-17s %-12s %+10.2f %-12s %s%n", movement.getId(),
-                    movement.getDateTime().format(TextFormat.DATE_TIME), movement.getType(), movement.getQuantity(),
+            System.out.printf("%-4d %-17s %-14s %+10.2f %-12s %s%n", movement.getId(),
+                    movement.getDateTime().format(TextFormat.DATE_TIME), movement.getType().getLabel(), movement.getQuantity(),
                     movement.getUser().getUsername(), reference(movement));
         }
         System.out.println("Stock actual: " + product.getCurrentStock() + " " + product.getUnitOfMeasure());

@@ -130,7 +130,7 @@ public class SalesReport {
         for (Sale sale : sales) {
             text.append(String.format("%-6d %-17s %-22s %-14s %-10s %10.2f%n",
                     sale.getNumber(), sale.getDateTime().format(DATE_TIME), cut(sale.getCustomer().getName(), 22),
-                    cut(sale.getRegisteredBy().getUsername(), 14), sale.getStatus(), sale.getTotal()));
+                    cut(sale.getRegisteredBy().getUsername(), 14), sale.getStatus().getLabel(), sale.getTotal()));
         }
         text.append("-".repeat(86)).append("\n");
         text.append(String.format("Ventas registradas: %d%n", getSalesCount()));

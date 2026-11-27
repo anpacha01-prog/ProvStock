@@ -1,7 +1,6 @@
 package ec.edu.espe.provstock.model;
 
 import java.time.LocalDateTime;
-import java.util.Arrays;
 
 /**
  * Any change in the stock of a product (Table B7). (RF05)
@@ -10,17 +9,10 @@ import java.util.Arrays;
  */
 public class StockMovement {
 
-    //N2: allowed values of type
-    public static final String SALE = "SALE";
-    public static final String PURCHASE = "PURCHASE";
-    public static final String VOIDED_SALE = "VOIDED_SALE";
-    public static final String ADJUSTMENT = "ADJUSTMENT";
-    public static final String[] TYPES = {SALE, PURCHASE, VOIDED_SALE, ADJUSTMENT};
-
     private int id;
     private LocalDateTime dateTime;
     private Product product;
-    private String type;
+    private MovementType type;
     private double quantity;
     private Sale sale;
     private Purchase purchase;
@@ -30,7 +22,7 @@ public class StockMovement {
     /**
      * A positive quantity is an entry and a negative quantity is an exit of stock.
      */
-    public StockMovement(int id, Product product, String type, double quantity, Sale sale,
+    public StockMovement(int id, Product product, MovementType type, double quantity, Sale sale,
             Purchase purchase, User user, String reason) {
         this.id = id;
         this.dateTime = LocalDateTime.now();
@@ -47,7 +39,7 @@ public class StockMovement {
      * Restores a movement read from the data files, with its original date and time.
      * Only FileManager uses it.
      */
-    public StockMovement(int id, LocalDateTime dateTime, Product product, String type, double quantity,
+    public StockMovement(int id, LocalDateTime dateTime, Product product, MovementType type, double quantity,
             Sale sale, Purchase purchase, User user, String reason) {
         this(id, product, type, quantity, sale, purchase, user, reason);
         this.dateTime = dateTime;
@@ -57,10 +49,7 @@ public class StockMovement {
      * N5: a movement refers to a sale, to a purchase or to none (adjustments), never to both.
      */
     public boolean validate() {
-        if (product == null || user == null || quantity == 0) {
-            return false;
-        }
-        if (!Arrays.asList(TYPES).contains(type)) {
+        if (product == null || user == null || type == null || quantity == 0) {
             return false;
         }
         if (sale != null && purchase != null) {
@@ -86,65 +75,38 @@ public class StockMovement {
                 + ", user=" + (user == null ? null : user.getUsername()) + ", reason=" + reason + '}';
     }
 
-    /**
-     * @return the id
-     */
     public int getId() {
         return id;
     }
 
-    /**
-     * @return the dateTime
-     */
     public LocalDateTime getDateTime() {
         return dateTime;
     }
 
-    /**
-     * @return the product
-     */
     public Product getProduct() {
         return product;
     }
 
-    /**
-     * @return the type
-     */
-    public String getType() {
+    public MovementType getType() {
         return type;
     }
 
-    /**
-     * @return the quantity
-     */
     public double getQuantity() {
         return quantity;
     }
 
-    /**
-     * @return the sale
-     */
     public Sale getSale() {
         return sale;
     }
 
-    /**
-     * @return the purchase
-     */
     public Purchase getPurchase() {
         return purchase;
     }
 
-    /**
-     * @return the user
-     */
     public User getUser() {
         return user;
     }
 
-    /**
-     * @return the reason
-     */
     public String getReason() {
         return reason;
     }

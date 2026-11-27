@@ -14,7 +14,7 @@ public class SaleFilter {
     private LocalDate endDate;
     private User salesperson;
     private Customer customer;
-    private String status;
+    private SaleStatus status;
 
     public SaleFilter from(LocalDate startDate) {
         this.startDate = startDate;
@@ -36,7 +36,7 @@ public class SaleFilter {
         return this;
     }
 
-    public SaleFilter withStatus(String status) {
+    public SaleFilter withStatus(SaleStatus status) {
         this.status = status;
         return this;
     }
@@ -50,7 +50,7 @@ public class SaleFilter {
                 && (endDate == null || !date.isAfter(endDate));
         boolean sameSalesperson = salesperson == null || sale.getRegisteredBy() == salesperson;
         boolean sameCustomer = customer == null || sale.getCustomer() == customer;
-        boolean sameStatus = status == null || status.isBlank() || sale.getStatus().equals(status);
+        boolean sameStatus = status == null || sale.getStatus() == status;
         return inPeriod && sameSalesperson && sameCustomer && sameStatus;
     }
 }

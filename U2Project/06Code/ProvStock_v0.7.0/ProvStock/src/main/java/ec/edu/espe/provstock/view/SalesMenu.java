@@ -5,10 +5,12 @@ import ec.edu.espe.provstock.controller.CustomerManager;
 import ec.edu.espe.provstock.controller.SalesManager;
 import ec.edu.espe.provstock.controller.StockMonitor;
 import ec.edu.espe.provstock.model.Customer;
+import ec.edu.espe.provstock.model.PaymentMethod;
 import ec.edu.espe.provstock.model.Product;
 import ec.edu.espe.provstock.model.Sale;
 import ec.edu.espe.provstock.model.SaleDetail;
 import ec.edu.espe.provstock.model.SaleFilter;
+import ec.edu.espe.provstock.model.SaleStatus;
 import java.math.BigDecimal;
 import java.util.List;
 
@@ -126,7 +128,7 @@ public class SalesMenu {
             System.out.println("Agregue al menos un producto.");
             return false;
         }
-        sale.setPaymentMethod(input.readOption("Forma de pago:", Sale.PAYMENT_METHODS));
+        sale.setPaymentMethod(input.readChoice("Forma de pago:", PaymentMethod.values()));
         printSale(sale);
         if (!input.readYesNo("¿Confirmar la venta?")) {
             return false;
@@ -166,11 +168,11 @@ public class SalesMenu {
     private void printSaleHeader(Sale sale) {
         if (sale.getNumber() != 0) {
             System.out.println("Venta Nº " + sale.getNumber() + "   " + sale.getDateTime().format(TextFormat.DATE_TIME)
-                    + "   Estado: " + sale.getStatus());
+                    + "   Estado: " + sale.getStatus().getLabel());
         }
         System.out.println("Cliente: " + sale.getCustomer().getName() + " (" + sale.getCustomer().getIdentification()
                 + ")");
-        System.out.println("Vendedor: " + sale.getRegisteredBy().getFullName() + "   Pago: " + sale.getPaymentMethod());
+        System.out.println("Vendedor: " + sale.getRegisteredBy().getFullName() + "   Pago: " + sale.getPaymentMethod().getLabel());
     }
 
     private void printSaleLines(Sale sale) {
@@ -233,7 +235,7 @@ public class SalesMenu {
         if (!identification.isEmpty()) {
             filter.byCustomer(customerManager.findByIdentification(identification));
         }
-        filter.withStatus(input.readOptionalOption("Estado:", new String[]{Sale.REGISTERED, Sale.VOIDED}));
+        filter.withStatus(input.readOptionalChoice("Estado:", SaleStatus.values()));
         showSalesList(salesManager.filterSales(filter));
     }
 
@@ -247,7 +249,7 @@ public class SalesMenu {
         for (Sale sale : sales) {
             System.out.printf("%-6d %-17s %-26s %-12s %-11s %10.2f%n", sale.getNumber(),
                     sale.getDateTime().format(TextFormat.DATE_TIME), TextFormat.cut(sale.getCustomer().getName(), 26),
-                    sale.getRegisteredBy().getUsername(), sale.getStatus(), sale.getTotal());
+                    sale.getRegisteredBy().getUsername(), sale.getStatus().getLabel(), sale.getTotal());
         }
         int number = input.readInt("Número de venta para ver el detalle (0 para volver): ");
         if (number != 0) {

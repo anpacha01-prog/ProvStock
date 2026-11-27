@@ -1,5 +1,6 @@
 package ec.edu.espe.provstock.controller;
 
+import ec.edu.espe.provstock.model.MovementType;
 import ec.edu.espe.provstock.model.Product;
 import ec.edu.espe.provstock.model.Purchase;
 import ec.edu.espe.provstock.model.PurchaseDetail;
@@ -42,7 +43,7 @@ public class Inventory {
             }
         }
         for (SaleDetail detail : sale.getDetails()) {
-            applyMovement(new StockMovement(movements.size() + 1, detail.getProduct(), StockMovement.SALE,
+            applyMovement(new StockMovement(movements.size() + 1, detail.getProduct(), MovementType.SALE,
                     -detail.getQuantity(), sale, null, sale.getRegisteredBy(), null));
         }
     }
@@ -52,7 +53,7 @@ public class Inventory {
      */
     public void registerPurchaseMovements(Purchase purchase) {
         for (PurchaseDetail detail : purchase.getDetails()) {
-            applyMovement(new StockMovement(movements.size() + 1, detail.getProduct(), StockMovement.PURCHASE,
+            applyMovement(new StockMovement(movements.size() + 1, detail.getProduct(), MovementType.PURCHASE,
                     detail.getQuantity(), null, purchase, purchase.getRegisteredBy(), null));
         }
     }
@@ -65,7 +66,7 @@ public class Inventory {
             throw new IllegalStateException("Solo se restaura el stock de una venta anulada");
         }
         for (SaleDetail detail : sale.getDetails()) {
-            applyMovement(new StockMovement(movements.size() + 1, detail.getProduct(), StockMovement.VOIDED_SALE,
+            applyMovement(new StockMovement(movements.size() + 1, detail.getProduct(), MovementType.VOIDED_SALE,
                     detail.getQuantity(), sale, null, sale.getVoidedBy(), sale.getVoidReason()));
         }
     }
@@ -89,7 +90,7 @@ public class Inventory {
         if (reason == null || reason.isBlank()) {
             throw new IllegalArgumentException("El motivo del ajuste es obligatorio");
         }
-        applyMovement(new StockMovement(movements.size() + 1, product, StockMovement.ADJUSTMENT,
+        applyMovement(new StockMovement(movements.size() + 1, product, MovementType.ADJUSTMENT,
                 quantity, null, null, user, reason));
     }
 
