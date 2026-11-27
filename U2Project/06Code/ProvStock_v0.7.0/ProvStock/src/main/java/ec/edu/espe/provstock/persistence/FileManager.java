@@ -13,6 +13,7 @@ import ec.edu.espe.provstock.controller.Inventory;
 import ec.edu.espe.provstock.controller.ProductCatalog;
 import ec.edu.espe.provstock.controller.PurchasingManager;
 import ec.edu.espe.provstock.controller.SalesManager;
+import ec.edu.espe.provstock.model.Category;
 import ec.edu.espe.provstock.model.Customer;
 import ec.edu.espe.provstock.model.MovementType;
 import ec.edu.espe.provstock.model.PaymentMethod;
@@ -26,6 +27,7 @@ import ec.edu.espe.provstock.model.SaleDetail;
 import ec.edu.espe.provstock.model.SaleStatus;
 import ec.edu.espe.provstock.model.StockMovement;
 import ec.edu.espe.provstock.model.Supplier;
+import ec.edu.espe.provstock.model.UnitOfMeasure;
 import ec.edu.espe.provstock.model.User;
 import java.io.IOException;
 import java.io.Reader;
@@ -244,9 +246,9 @@ public class FileManager {
             json.addProperty("code", product.getCode());
             json.addProperty("name", product.getName());
             json.addProperty("description", product.getDescription());
-            json.addProperty("category", product.getCategory());
+            json.addProperty("category", product.getCategory().name());
             json.addProperty("brand", product.getBrand());
-            json.addProperty("unitOfMeasure", product.getUnitOfMeasure());
+            json.addProperty("unitOfMeasure", product.getUnitOfMeasure().name());
             json.addProperty("location", product.getLocation());
             json.addProperty("purchaseCost", product.getPurchaseCost());
             json.addProperty("salePrice", product.getSalePrice());
@@ -581,7 +583,8 @@ public class FileManager {
     }
 
     private static ProductInfo readProductInfo(JsonObject json) {
-        return new ProductInfo(readText(json, "name"), readText(json, "category"), readText(json, "unitOfMeasure"))
+        return new ProductInfo(readText(json, "name"), Category.valueOf(readText(json, "category")),
+                UnitOfMeasure.valueOf(readText(json, "unitOfMeasure")))
                 .withDescription(readText(json, "description")).withBrand(readText(json, "brand"))
                 .withLocation(readText(json, "location"))
                 .withPrices(readDecimal(json, "purchaseCost"), readDecimal(json, "salePrice"))

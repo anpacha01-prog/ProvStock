@@ -15,7 +15,7 @@ public class PurchaseDetailTest {
      */
     @Test
     public void testCalculateSubtotalGood1() {
-        Product product = new Product(1, "CAB-001", new ProductInfo("Cable 12 AWG", "CABLES", "METER")
+        Product product = new Product(1, "CAB-001", new ProductInfo("Cable 12 AWG", Category.CABLES, UnitOfMeasure.METER)
                 .withDescription("Cable de cobre").withBrand("Incable").withLocation("A1")
                 .withPrices(new BigDecimal("0.50"), new BigDecimal("0.80")).withMinimumStock(10));
         PurchaseDetail instance = new PurchaseDetail(product, 100, new BigDecimal("0.45"));
@@ -29,7 +29,7 @@ public class PurchaseDetailTest {
      */
     @Test
     public void testValidateGood1() {
-        Product product = new Product(1, "CAB-001", new ProductInfo("Cable 12 AWG", "CABLES", "METER")
+        Product product = new Product(1, "CAB-001", new ProductInfo("Cable 12 AWG", Category.CABLES, UnitOfMeasure.METER)
                 .withDescription("Cable de cobre").withBrand("Incable").withLocation("A1")
                 .withPrices(new BigDecimal("0.50"), new BigDecimal("0.80")).withMinimumStock(10));
         PurchaseDetail instance = new PurchaseDetail(product, 100, new BigDecimal("0.45"));
@@ -44,7 +44,7 @@ public class PurchaseDetailTest {
      */
     @Test
     public void testValidateBad1() {
-        Product product = new Product(1, "CAB-001", new ProductInfo("Cable 12 AWG", "CABLES", "METER")
+        Product product = new Product(1, "CAB-001", new ProductInfo("Cable 12 AWG", Category.CABLES, UnitOfMeasure.METER)
                 .withDescription("Cable de cobre").withBrand("Incable").withLocation("A1")
                 .withPrices(new BigDecimal("0.50"), new BigDecimal("0.80")).withMinimumStock(10));
         product.deactivate();
@@ -60,7 +60,7 @@ public class PurchaseDetailTest {
      */
     @Test
     public void testValidateBad2() {
-        Product product = new Product(1, "CAB-001", new ProductInfo("Cable 12 AWG", "CABLES", "METER")
+        Product product = new Product(1, "CAB-001", new ProductInfo("Cable 12 AWG", Category.CABLES, UnitOfMeasure.METER)
                 .withDescription("Cable de cobre").withBrand("Incable").withLocation("A1")
                 .withPrices(new BigDecimal("0.50"), new BigDecimal("0.80")).withMinimumStock(10));
         PurchaseDetail instance = new PurchaseDetail(product, 100, new BigDecimal("0"));

@@ -87,6 +87,7 @@ public class Inventory {
         if (quantity == 0) {
             throw new IllegalArgumentException("La cantidad del ajuste no puede ser 0");
         }
+        product.checkQuantity(quantity);
         if (reason == null || reason.isBlank()) {
             throw new IllegalArgumentException("El motivo del ajuste es obligatorio");
         }

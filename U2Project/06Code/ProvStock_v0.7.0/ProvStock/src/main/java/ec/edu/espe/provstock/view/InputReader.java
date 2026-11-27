@@ -1,6 +1,7 @@
 package ec.edu.espe.provstock.view;
 
 import ec.edu.espe.provstock.model.Labeled;
+import ec.edu.espe.provstock.model.UnitOfMeasure;
 import ec.edu.espe.provstock.utils.Money;
 import java.math.BigDecimal;
 import java.time.LocalDate;
@@ -93,6 +94,20 @@ public class InputReader {
                 return value;
             }
             System.out.println("  El valor debe ser mayor que 0.");
+        }
+    }
+
+    /**
+     * D5: reads a quantity for a product. If the unit does not accept decimals, it asks
+     * again until the user writes a whole number.
+     */
+    public double readQuantity(String message, UnitOfMeasure unit, boolean zeroAllowed) {
+        while (true) {
+            double value = zeroAllowed ? readNonNegativeDouble(message) : readPositiveDouble(message);
+            if (unit.isValidQuantity(value)) {
+                return value;
+            }
+            System.out.println("  La unidad " + unit.getLabel() + " solo acepta cantidades enteras.");
         }
     }
 

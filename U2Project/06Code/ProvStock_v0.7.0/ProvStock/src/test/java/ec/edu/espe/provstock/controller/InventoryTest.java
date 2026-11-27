@@ -1,5 +1,7 @@
 package ec.edu.espe.provstock.controller;
 
+import ec.edu.espe.provstock.model.Category;
+import ec.edu.espe.provstock.model.UnitOfMeasure;
 import java.math.BigDecimal;
 import ec.edu.espe.provstock.model.Product;
 import ec.edu.espe.provstock.model.ProductInfo;
@@ -23,7 +25,7 @@ public class InventoryTest {
     private void createInventory() {
         catalog = new ProductCatalog();
         instance = new Inventory(new StockMonitor(catalog), catalog);
-        product = new Product(0, "CAB-001", new ProductInfo("Cable 12 AWG", "CABLES", "METER")
+        product = new Product(0, "CAB-001", new ProductInfo("Cable 12 AWG", Category.CABLES, UnitOfMeasure.METER)
                 .withDescription("").withBrand("Incable").withLocation("A1")
                 .withPrices(new BigDecimal("0.50"), new BigDecimal("0.80")).withMinimumStock(10));
         catalog.registerProduct(product);

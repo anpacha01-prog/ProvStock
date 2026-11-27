@@ -58,7 +58,7 @@ public class InventoryReport {
             String name = product.getName().length() <= 28 ? product.getName()
                     : product.getName().substring(0, 27) + ".";
             text.append(String.format("%-10s %-28s %-6s %10.2f %10.2f %9.2f %10.2f%s%n",
-                    product.getCode(), name, product.getUnitOfMeasure(), product.getCurrentStock(),
+                    product.getCode(), name, product.getUnitOfMeasure().getSymbol(), product.getCurrentStock(),
                     product.getMinimumStock(), product.getPurchaseCost(), product.getStockValue(),
                     product.isLowStock() ? " *" : ""));
         }

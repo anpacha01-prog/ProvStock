@@ -15,7 +15,7 @@ public class SaleDetailTest {
      */
     @Test
     public void testCalculateSubtotalGood1() {
-        Product product = new Product(1, "CAB-001", new ProductInfo("Cable 12 AWG", "CABLES", "METER")
+        Product product = new Product(1, "CAB-001", new ProductInfo("Cable 12 AWG", Category.CABLES, UnitOfMeasure.METER)
                 .withDescription("Cable de cobre").withBrand("Incable").withLocation("A1")
                 .withPrices(new BigDecimal("0.50"), new BigDecimal("0.80")).withMinimumStock(10));
         SaleDetail instance = new SaleDetail(product, 3, new BigDecimal("2.50"));
@@ -29,7 +29,7 @@ public class SaleDetailTest {
      */
     @Test
     public void testCalculateSubtotalStrong1() {
-        Product product = new Product(1, "CAB-001", new ProductInfo("Cable 12 AWG", "CABLES", "METER")
+        Product product = new Product(1, "CAB-001", new ProductInfo("Cable 12 AWG", Category.CABLES, UnitOfMeasure.METER)
                 .withDescription("Cable de cobre").withBrand("Incable").withLocation("A1")
                 .withPrices(new BigDecimal("0.50"), new BigDecimal("0.80")).withMinimumStock(10));
         SaleDetail instance = new SaleDetail(product, 0.333, new BigDecimal("3.0"));
@@ -44,7 +44,7 @@ public class SaleDetailTest {
      */
     @Test
     public void testValidateBad1() {
-        Product product = new Product(1, "CAB-001", new ProductInfo("Cable 12 AWG", "CABLES", "METER")
+        Product product = new Product(1, "CAB-001", new ProductInfo("Cable 12 AWG", Category.CABLES, UnitOfMeasure.METER)
                 .withDescription("Cable de cobre").withBrand("Incable").withLocation("A1")
                 .withPrices(new BigDecimal("0.50"), new BigDecimal("0.80")).withMinimumStock(10));
         SaleDetail instance = new SaleDetail(product, 0, new BigDecimal("2.50"));

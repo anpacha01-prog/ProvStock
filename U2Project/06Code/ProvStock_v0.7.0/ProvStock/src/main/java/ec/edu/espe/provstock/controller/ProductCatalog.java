@@ -1,5 +1,6 @@
 package ec.edu.espe.provstock.controller;
 
+import ec.edu.espe.provstock.model.Category;
 import ec.edu.espe.provstock.model.Product;
 import java.util.ArrayList;
 import java.util.Collections;
@@ -76,16 +77,16 @@ public class ProductCatalog {
 
     /**
      * Searches active products by code, name, description or brand.
-     * An empty text or category means "all".
+     * An empty text or a null category means "all".
      */
-    public List<Product> search(String text, String category) {
+    public List<Product> search(String text, Category category) {
         String search = text == null ? "" : text.trim().toLowerCase();
         List<Product> result = new ArrayList<>();
         for (Product product : products) {
             if (!product.isActive()) {
                 continue;
             }
-            if (category != null && !category.isBlank() && !product.getCategory().equals(category)) {
+            if (category != null && product.getCategory() != category) {
                 continue;
             }
             String data = (product.getCode() + " " + product.getName() + " " + product.getDescription()

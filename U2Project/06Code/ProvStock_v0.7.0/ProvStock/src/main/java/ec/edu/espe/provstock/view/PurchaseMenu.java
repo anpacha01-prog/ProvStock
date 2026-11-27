@@ -156,7 +156,8 @@ public class PurchaseMenu {
     private void addProductToPurchase(Purchase purchase) {
         //UC-15 includes UC-06: search the product
         Product product = console.searchAndChooseProduct("Buscar producto (Enter para ver todos): ");
-        double quantity = input.readPositiveDouble("Cantidad (" + product.getUnitOfMeasure() + "): ");
+        double quantity = input.readQuantity("Cantidad (" + product.getUnitOfMeasure().getSymbol() + "): ",
+                product.getUnitOfMeasure(), false);
         BigDecimal unitCost = input.readMoney("Costo unitario", product.getPurchaseCost());
         purchase.addProduct(product, quantity, unitCost);
         System.out.println("Agregado: " + product.getName() + " x " + quantity);

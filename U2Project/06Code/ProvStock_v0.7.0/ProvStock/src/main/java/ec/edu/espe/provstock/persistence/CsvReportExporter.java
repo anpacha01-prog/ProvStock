@@ -53,8 +53,8 @@ public class CsvReportExporter {
         rows.add(new String[]{"Codigo", "Producto", "Categoria", "Unidad", "Ubicacion", "Stock", "Stock minimo",
             "Costo", "Valor", "Stock bajo"});
         for (Product product : report.getProducts()) {
-            rows.add(new String[]{product.getCode(), product.getName(), product.getCategory(),
-                product.getUnitOfMeasure(), product.getLocation(), CsvWriter.number(product.getCurrentStock()),
+            rows.add(new String[]{product.getCode(), product.getName(), product.getCategory().getLabel(),
+                product.getUnitOfMeasure().getLabel(), product.getLocation(), CsvWriter.number(product.getCurrentStock()),
                 CsvWriter.number(product.getMinimumStock()), CsvWriter.money(product.getPurchaseCost()),
                 CsvWriter.money(product.getStockValue()), product.isLowStock() ? "SI" : "NO"});
         }
@@ -90,7 +90,7 @@ public class CsvReportExporter {
         rows.add(new String[]{"Codigo", "Producto", "Unidad", "Ubicacion", "Stock", "Valor"});
         List<Product> productsWithoutSales = report.getProductsWithoutSales();
         for (Product product : productsWithoutSales) {
-            rows.add(new String[]{product.getCode(), product.getName(), product.getUnitOfMeasure(),
+            rows.add(new String[]{product.getCode(), product.getName(), product.getUnitOfMeasure().getLabel(),
                 product.getLocation(), CsvWriter.number(product.getCurrentStock()),
                 CsvWriter.money(product.getStockValue())});
         }

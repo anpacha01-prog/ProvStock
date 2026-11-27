@@ -13,8 +13,8 @@ import java.math.BigDecimal;
 public class ProductInfo {
 
     private final String name;
-    private final String category;
-    private final String unitOfMeasure;
+    private final Category category;
+    private final UnitOfMeasure unitOfMeasure;
     private String description = "";
     private String brand = "";
     private String location = "";
@@ -22,7 +22,7 @@ public class ProductInfo {
     private BigDecimal salePrice = Money.ZERO;
     private double minimumStock;
 
-    public ProductInfo(String name, String category, String unitOfMeasure) {
+    public ProductInfo(String name, Category category, UnitOfMeasure unitOfMeasure) {
         this.name = name;
         this.category = category;
         this.unitOfMeasure = unitOfMeasure;
@@ -61,11 +61,11 @@ public class ProductInfo {
         return name;
     }
 
-    public String getCategory() {
+    public Category getCategory() {
         return category;
     }
 
-    public String getUnitOfMeasure() {
+    public UnitOfMeasure getUnitOfMeasure() {
         return unitOfMeasure;
     }
 

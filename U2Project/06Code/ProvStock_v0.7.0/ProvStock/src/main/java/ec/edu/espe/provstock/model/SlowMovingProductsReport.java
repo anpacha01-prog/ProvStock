@@ -95,7 +95,7 @@ public class SlowMovingProductsReport {
             String name = product.getName().length() <= 32 ? product.getName()
                     : product.getName().substring(0, 31) + ".";
             text.append(String.format("%-10s %-32s %-6s %10.2f %12.2f%n", product.getCode(), name,
-                    product.getUnitOfMeasure(), product.getCurrentStock(), product.getStockValue()));
+                    product.getUnitOfMeasure().getSymbol(), product.getCurrentStock(), product.getStockValue()));
         }
         text.append("-".repeat(76)).append("\n");
         text.append(String.format("Productos sin ventas: %d%n", productsWithoutSales.size()));

@@ -157,7 +157,7 @@ public class SalesReport {
         int position = 1;
         for (Product product : getBestSellingProducts(5)) {
             text.append(String.format("  %d. %-12s %-35s %.2f %s%n", position, product.getCode(),
-                    cut(product.getName(), 35), quantities.get(product), product.getUnitOfMeasure()));
+                    cut(product.getName(), 35), quantities.get(product), product.getUnitOfMeasure().getSymbol()));
             position++;
         }
     }

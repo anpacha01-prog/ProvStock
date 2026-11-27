@@ -4,6 +4,7 @@ import ec.edu.espe.provstock.controller.AccessManager;
 import ec.edu.espe.provstock.controller.Inventory;
 import ec.edu.espe.provstock.controller.ProductCatalog;
 import ec.edu.espe.provstock.controller.StockMonitor;
+import ec.edu.espe.provstock.model.Category;
 import ec.edu.espe.provstock.model.Product;
 import ec.edu.espe.provstock.model.StockMovement;
 import java.util.List;
@@ -34,8 +35,8 @@ public class InventoryMenu {
     public void viewInventory() {
         //UC-12 2a: the list can be filtered by name or category
         String text = input.readOptionalText("Filtrar por código o nombre (Enter para todos): ");
-        String category = input.readOptionalOption("Categoría:", Product.CATEGORIES);
-        if (text.isEmpty() && (category == null || category.isBlank())) {
+        Category category = input.readOptionalChoice("Categoría:", Category.values());
+        if (text.isEmpty() && category == null) {
             console.printProducts(inventory.getStockOverview());
         } else {
             console.printProducts(productCatalog.search(text, category));
@@ -57,7 +58,7 @@ public class InventoryMenu {
                     movement.getDateTime().format(TextFormat.DATE_TIME), movement.getType().getLabel(), movement.getQuantity(),
                     movement.getUser().getUsername(), reference(movement));
         }
-        System.out.println("Stock actual: " + product.getCurrentStock() + " " + product.getUnitOfMeasure());
+        System.out.println("Stock actual: " + product.getCurrentStock() + " " + product.getUnitOfMeasure().getSymbol());
     }
 
     /**
@@ -98,7 +99,7 @@ public class InventoryMenu {
         for (Product product : products) {
             System.out.printf("%-10s %-30s %10.2f %10.2f %-6s  %-10s%n", product.getCode(),
                     TextFormat.cut(product.getName(), 30), product.getCurrentStock(), product.getMinimumStock(),
-                    product.getUnitOfMeasure(), TextFormat.location(product));
+                    product.getUnitOfMeasure().getSymbol(), TextFormat.location(product));
         }
     }
 }

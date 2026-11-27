@@ -5,11 +5,13 @@ import ec.edu.espe.provstock.controller.CustomerManager;
 import ec.edu.espe.provstock.controller.Inventory;
 import ec.edu.espe.provstock.controller.ProductCatalog;
 import ec.edu.espe.provstock.controller.PurchasingManager;
+import ec.edu.espe.provstock.model.Category;
 import ec.edu.espe.provstock.model.Customer;
 import ec.edu.espe.provstock.model.Product;
 import ec.edu.espe.provstock.model.ProductInfo;
 import ec.edu.espe.provstock.model.Role;
 import ec.edu.espe.provstock.model.Supplier;
+import ec.edu.espe.provstock.model.UnitOfMeasure;
 import ec.edu.espe.provstock.model.User;
 import java.math.BigDecimal;
 
@@ -55,22 +57,22 @@ public class SampleData {
     }
 
     private void createProducts(User owner) {
-        addProduct("CAB-001", new ProductInfo("Cable THHN 12 AWG", "CABLES", "METER")
+        addProduct("CAB-001", new ProductInfo("Cable THHN 12 AWG", Category.CABLES, UnitOfMeasure.METER)
                 .withDescription("Cable de cobre sólido").withBrand("Electrocables").withLocation("Pasillo A1")
                 .withPrices(new BigDecimal("0.45"), new BigDecimal("0.70")).withMinimumStock(100), 500, owner);
-        addProduct("CAB-002", new ProductInfo("Cable gemelo 2x14 AWG", "CABLES", "METER")
+        addProduct("CAB-002", new ProductInfo("Cable gemelo 2x14 AWG", Category.CABLES, UnitOfMeasure.METER)
                 .withDescription("Cable flexible doble").withBrand("Electrocables").withLocation("Pasillo A2")
                 .withPrices(new BigDecimal("0.35"), new BigDecimal("0.55")).withMinimumStock(100), 80, owner);
-        addProduct("ILU-001", new ProductInfo("Foco LED 9W luz blanca", "LIGHTING", "UNIT")
+        addProduct("ILU-001", new ProductInfo("Foco LED 9W luz blanca", Category.LIGHTING, UnitOfMeasure.UNIT)
                 .withDescription("Rosca E27").withBrand("Sylvania").withLocation("Pasillo B1")
                 .withPrices(new BigDecimal("1.20"), new BigDecimal("2.50")).withMinimumStock(20), 60, owner);
-        addProduct("INT-001", new ProductInfo("Interruptor simple", "SWITCHES_AND_OUTLETS", "UNIT")
+        addProduct("INT-001", new ProductInfo("Interruptor simple", Category.SWITCHES_AND_OUTLETS, UnitOfMeasure.UNIT)
                 .withDescription("Blanco, empotrable").withBrand("Veto").withLocation("Pasillo C1")
                 .withPrices(new BigDecimal("1.10"), new BigDecimal("2.00")).withMinimumStock(15), 40, owner);
-        addProduct("PRO-001", new ProductInfo("Breaker 1 polo 20A", "PROTECTION_DEVICES", "UNIT")
+        addProduct("PRO-001", new ProductInfo("Breaker 1 polo 20A", Category.PROTECTION_DEVICES, UnitOfMeasure.UNIT)
                 .withDescription("Riel DIN").withBrand("Schneider").withLocation("Pasillo D1")
                 .withPrices(new BigDecimal("4.50"), new BigDecimal("7.80")).withMinimumStock(10), 8, owner);
-        addProduct("HER-001", new ProductInfo("Alicate universal 8 pulgadas", "TOOLS", "UNIT")
+        addProduct("HER-001", new ProductInfo("Alicate universal 8 pulgadas", Category.TOOLS, UnitOfMeasure.UNIT)
                 .withDescription("Mango aislado").withBrand("Stanley").withLocation("Pasillo E1")
                 .withPrices(new BigDecimal("6.00"), new BigDecimal("10.50")).withMinimumStock(5), 12, owner);
     }

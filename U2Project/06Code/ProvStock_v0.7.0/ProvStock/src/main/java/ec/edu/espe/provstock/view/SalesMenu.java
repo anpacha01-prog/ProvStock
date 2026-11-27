@@ -113,7 +113,8 @@ public class SalesMenu {
     private void addProductToSale(Sale sale) {
         //UC-08 includes UC-06: search the product
         Product product = console.searchAndChooseProduct("Buscar producto (código o nombre, Enter para ver todos): ");
-        double quantity = input.readPositiveDouble("Cantidad (" + product.getUnitOfMeasure() + "): ");
+        double quantity = input.readQuantity("Cantidad (" + product.getUnitOfMeasure().getSymbol() + "): ",
+                product.getUnitOfMeasure(), false);
         sale.addProduct(product, quantity);
         System.out.println("Agregado: " + product.getName() + " x " + quantity);
     }

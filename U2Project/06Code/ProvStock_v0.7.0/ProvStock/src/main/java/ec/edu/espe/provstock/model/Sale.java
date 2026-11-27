@@ -70,6 +70,8 @@ public class Sale {
         if (quantity <= 0) {
             throw new IllegalArgumentException("La cantidad debe ser mayor que 0");
         }
+        //D5: whole quantities for UNIT, ROLL and BOX (E14: half a light bulb)
+        product.checkQuantity(quantity);
     }
 
     /**

@@ -85,8 +85,8 @@ public class ConsoleHelper {
     public String formatProduct(Product product) {
         //UC-06: the list shows the location of the product in the warehouse
         return String.format("%-10s %-28s %-16s %10.2f %-6s %9.2f  %-10s%s", product.getCode(),
-                TextFormat.cut(product.getName(), 28), TextFormat.cut(product.getCategory(), 16),
-                product.getCurrentStock(), product.getUnitOfMeasure(), product.getSalePrice(),
+                TextFormat.cut(product.getName(), 28), TextFormat.cut(product.getCategory().getLabel(), 16),
+                product.getCurrentStock(), product.getUnitOfMeasure().getSymbol(), product.getSalePrice(),
                 TextFormat.location(product), product.isLowStock() ? "  (stock bajo)" : "");
     }
 

@@ -3,8 +3,10 @@ package ec.edu.espe.provstock.view;
 import ec.edu.espe.provstock.controller.AccessManager;
 import ec.edu.espe.provstock.controller.Inventory;
 import ec.edu.espe.provstock.controller.ProductCatalog;
+import ec.edu.espe.provstock.model.Category;
 import ec.edu.espe.provstock.model.Product;
 import ec.edu.espe.provstock.model.ProductInfo;
+import ec.edu.espe.provstock.model.UnitOfMeasure;
 import java.math.BigDecimal;
 
 /**
@@ -32,7 +34,7 @@ public class ProductMenu {
 
     public void searchProducts() {
         String text = input.readOptionalText("Texto a buscar (código, nombre, marca; Enter para todos): ");
-        String category = input.readOptionalOption("Categoría:", Product.CATEGORIES);
+        Category category = input.readOptionalChoice("Categoría:", Category.values());
         console.printProducts(productCatalog.search(text, category));
     }
 
@@ -60,7 +62,7 @@ public class ProductMenu {
             throw new IllegalArgumentException("Ya existe un producto con el código " + code + ".");
         }
         Product product = new Product(0, code, readNewProductInfo());
-        double initialStock = input.readNonNegativeDouble("Stock inicial: ");
+        double initialStock = input.readQuantity("Stock inicial: ", product.getUnitOfMeasure(), true);
         productCatalog.registerProduct(product);
         //AS-05, FR-05.4: the initial stock is loaded with an adjustment
         if (initialStock > 0) {
@@ -72,9 +74,9 @@ public class ProductMenu {
     private ProductInfo readNewProductInfo() {
         String name = input.readText("Nombre: ");
         String description = input.readOptionalText("Descripción (opcional): ");
-        String category = input.readOption("Categoría:", Product.CATEGORIES);
+        Category category = input.readChoice("Categoría:", Category.values());
         String brand = input.readOptionalText("Marca (opcional): ");
-        String unit = input.readOption("Unidad de medida:", Product.UNITS_OF_MEASURE);
+        UnitOfMeasure unit = input.readChoice("Unidad de medida:", UnitOfMeasure.values());
         String location = input.readOptionalText("Ubicación en bodega (opcional): ");
         BigDecimal purchaseCost = input.readMoney("Costo de compra: ", true);
         BigDecimal salePrice = input.readMoney("Precio de venta: ", false);
@@ -89,9 +91,9 @@ public class ProductMenu {
         System.out.println("Presione Enter para mantener el valor actual.");
         String name = input.readTextOrKeep("Nombre", product.getName());
         String description = input.readTextOrKeep("Descripción", product.getDescription());
-        String category = readCategoryOrKeep(product.getCategory());
+        Category category = readCategoryOrKeep(product.getCategory());
         String brand = input.readTextOrKeep("Marca", product.getBrand());
-        String unit = readUnitOrKeep(product.getUnitOfMeasure());
+        UnitOfMeasure unit = readUnitOrKeep(product.getUnitOfMeasure());
         String location = input.readTextOrKeep("Ubicación", product.getLocation());
         BigDecimal purchaseCost = input.readMoney("Costo de compra", product.getPurchaseCost());
         BigDecimal salePrice = input.readMoney("Precio de venta", product.getSalePrice());
@@ -103,16 +105,16 @@ public class ProductMenu {
         System.out.println("Producto actualizado. (El stock solo cambia con ventas, compras o ajustes.)");
     }
 
-    private String readCategoryOrKeep(String category) {
-        if (input.readYesNo("¿Cambiar la categoría (actual: " + category + ")?")) {
-            return input.readOption("Categoría:", Product.CATEGORIES);
+    private Category readCategoryOrKeep(Category category) {
+        if (input.readYesNo("¿Cambiar la categoría (actual: " + category.getLabel() + ")?")) {
+            return input.readChoice("Categoría:", Category.values());
         }
         return category;
     }
 
-    private String readUnitOrKeep(String unit) {
-        if (input.readYesNo("¿Cambiar la unidad (actual: " + unit + ")?")) {
-            return input.readOption("Unidad de medida:", Product.UNITS_OF_MEASURE);
+    private UnitOfMeasure readUnitOrKeep(UnitOfMeasure unit) {
+        if (input.readYesNo("¿Cambiar la unidad (actual: " + unit.getLabel() + ")?")) {
+            return input.readChoice("Unidad de medida:", UnitOfMeasure.values());
         }
         return unit;
     }

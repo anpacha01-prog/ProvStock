@@ -13,7 +13,7 @@ public class PurchaseTest {
 
     //creates an active product without stock
     private Product createProduct(String code, double purchaseCost, double salePrice) {
-        return new Product(1, code, new ProductInfo("Producto " + code, "CABLES", "METER")
+        return new Product(1, code, new ProductInfo("Producto " + code, Category.CABLES, UnitOfMeasure.METER)
                 .withDescription("").withBrand("Incable").withLocation("A1")
                 .withPrices(BigDecimal.valueOf(purchaseCost), BigDecimal.valueOf(salePrice)).withMinimumStock(10));
     }

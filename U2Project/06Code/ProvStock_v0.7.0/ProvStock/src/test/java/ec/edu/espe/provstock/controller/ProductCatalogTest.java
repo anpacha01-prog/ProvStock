@@ -1,5 +1,7 @@
 package ec.edu.espe.provstock.controller;
 
+import ec.edu.espe.provstock.model.Category;
+import ec.edu.espe.provstock.model.UnitOfMeasure;
 import java.math.BigDecimal;
 import ec.edu.espe.provstock.model.Product;
 import ec.edu.espe.provstock.model.ProductInfo;
@@ -12,8 +14,8 @@ import static org.junit.jupiter.api.Assertions.*;
  */
 public class ProductCatalogTest {
 
-    private Product createProduct(String code, String name, String category) {
-        return new Product(0, code, new ProductInfo(name, category, "UNIT")
+    private Product createProduct(String code, String name, Category category) {
+        return new Product(0, code, new ProductInfo(name, category, UnitOfMeasure.UNIT)
                 .withDescription("").withBrand("Incable").withLocation("A1")
                 .withPrices(new BigDecimal("0.50"), new BigDecimal("0.80")).withMinimumStock(10));
     }
@@ -24,7 +26,7 @@ public class ProductCatalogTest {
     @Test
     public void testRegisterProductGood1() {
         ProductCatalog instance = new ProductCatalog();
-        Product product = createProduct("CAB-001", "Cable 12 AWG", "CABLES");
+        Product product = createProduct("CAB-001", "Cable 12 AWG", Category.CABLES);
         instance.registerProduct(product);
         boolean expResult = true;
         boolean result = instance.isRegistered("CAB-001");
@@ -37,8 +39,8 @@ public class ProductCatalogTest {
     @Test
     public void testRegisterProductBad1() {
         ProductCatalog instance = new ProductCatalog();
-        instance.registerProduct(createProduct("CAB-001", "Cable 12 AWG", "CABLES"));
-        Product repeated = createProduct("cab-001", "Cable 14 AWG", "CABLES");
+        instance.registerProduct(createProduct("CAB-001", "Cable 12 AWG", Category.CABLES));
+        Product repeated = createProduct("cab-001", "Cable 14 AWG", Category.CABLES);
         //this test fails on purpose: the expected exception is wrong (35% failure requirement)
         assertThrows(IllegalStateException.class, () -> instance.registerProduct(repeated));
     }
@@ -49,7 +51,7 @@ public class ProductCatalogTest {
     @Test
     public void testFindByCodeStrong1() {
         ProductCatalog instance = new ProductCatalog();
-        Product product = createProduct("CAB-001", "Cable 12 AWG", "CABLES");
+        Product product = createProduct("CAB-001", "Cable 12 AWG", Category.CABLES);
         instance.registerProduct(product);
         Product expResult = product;
         Product result = instance.findByCode("  cab-001 ");
@@ -62,11 +64,11 @@ public class ProductCatalogTest {
     @Test
     public void testSearchGood1() {
         ProductCatalog instance = new ProductCatalog();
-        instance.registerProduct(createProduct("CAB-001", "Cable 12 AWG", "CABLES"));
-        instance.registerProduct(createProduct("FOC-001", "Foco LED 9W", "LIGHTING"));
-        instance.registerProduct(createProduct("FOC-002", "Foco LED 12W", "LIGHTING"));
+        instance.registerProduct(createProduct("CAB-001", "Cable 12 AWG", Category.CABLES));
+        instance.registerProduct(createProduct("FOC-001", "Foco LED 9W", Category.LIGHTING));
+        instance.registerProduct(createProduct("FOC-002", "Foco LED 12W", Category.LIGHTING));
         int expResult = 2;
-        int result = instance.search("", "LIGHTING").size();
+        int result = instance.search("", Category.LIGHTING).size();
         assertEquals(expResult, result);
     }
 
@@ -76,7 +78,7 @@ public class ProductCatalogTest {
     @Test
     public void testDeactivateProductGood1() {
         ProductCatalog instance = new ProductCatalog();
-        Product product = createProduct("CAB-001", "Cable 12 AWG", "CABLES");
+        Product product = createProduct("CAB-001", "Cable 12 AWG", Category.CABLES);
         instance.registerProduct(product);
         instance.deactivateProduct(product);
         //this test fails on purpose: the expected value is wrong (35% failure requirement)

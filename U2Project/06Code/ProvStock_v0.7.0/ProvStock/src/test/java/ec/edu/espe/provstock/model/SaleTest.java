@@ -13,7 +13,7 @@ public class SaleTest {
 
     //creates a product with 100 meters in stock and a sale price of 0.80
     private Product createProduct() {
-        Product product = new Product(1, "CAB-001", new ProductInfo("Cable 12 AWG", "CABLES", "METER")
+        Product product = new Product(1, "CAB-001", new ProductInfo("Cable 12 AWG", Category.CABLES, UnitOfMeasure.METER)
                 .withDescription("Cable de cobre").withBrand("Incable").withLocation("A1")
                 .withPrices(new BigDecimal("0.50"), new BigDecimal("0.80")).withMinimumStock(10));
         product.updateStock(100);

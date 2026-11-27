@@ -15,7 +15,7 @@ public class ProductTest {
      */
     @Test
     public void testValidateGood1() {
-        Product instance = new Product(1, "CAB-001", new ProductInfo("Cable 12 AWG", "CABLES", "METER")
+        Product instance = new Product(1, "CAB-001", new ProductInfo("Cable 12 AWG", Category.CABLES, UnitOfMeasure.METER)
                 .withDescription("Cable de cobre").withBrand("Incable").withLocation("A1")
                 .withPrices(new BigDecimal("0.50"), new BigDecimal("0.80")).withMinimumStock(10));
         boolean expResult = true;
@@ -28,7 +28,7 @@ public class ProductTest {
      */
     @Test
     public void testValidateBad1() {
-        Product instance = new Product(1, "CAB-001", new ProductInfo("", "CABLES", "METER")
+        Product instance = new Product(1, "CAB-001", new ProductInfo("", Category.CABLES, UnitOfMeasure.METER)
                 .withDescription("Cable de cobre").withBrand("Incable").withLocation("A1")
                 .withPrices(new BigDecimal("0.50"), new BigDecimal("0.80")).withMinimumStock(10));
         //this test fails on purpose: the expected value is wrong (35% failure requirement)
@@ -42,7 +42,7 @@ public class ProductTest {
      */
     @Test
     public void testValidateBad2() {
-        Product instance = new Product(1, "CAB-001", new ProductInfo("Cable 12 AWG", "FOOD", "METER")
+        Product instance = new Product(1, "CAB-001", new ProductInfo("Cable 12 AWG", null, UnitOfMeasure.METER)
                 .withDescription("Cable de cobre").withBrand("Incable").withLocation("A1")
                 .withPrices(new BigDecimal("0.50"), new BigDecimal("0.80")).withMinimumStock(10));
         boolean expResult = false;
@@ -55,7 +55,7 @@ public class ProductTest {
      */
     @Test
     public void testValidateBad3() {
-        Product instance = new Product(1, "CAB-001", new ProductInfo("Cable 12 AWG", "CABLES", "METER")
+        Product instance = new Product(1, "CAB-001", new ProductInfo("Cable 12 AWG", Category.CABLES, UnitOfMeasure.METER)
                 .withDescription("Cable de cobre").withBrand("Incable").withLocation("A1")
                 .withPrices(new BigDecimal("0.50"), new BigDecimal("0.0")).withMinimumStock(10));
         //this test fails on purpose: the expected value is wrong (35% failure requirement)
@@ -69,7 +69,7 @@ public class ProductTest {
      */
     @Test
     public void testHasStockGood1() {
-        Product instance = new Product(1, "CAB-001", new ProductInfo("Cable 12 AWG", "CABLES", "METER")
+        Product instance = new Product(1, "CAB-001", new ProductInfo("Cable 12 AWG", Category.CABLES, UnitOfMeasure.METER)
                 .withDescription("Cable de cobre").withBrand("Incable").withLocation("A1")
                 .withPrices(new BigDecimal("0.50"), new BigDecimal("0.80")).withMinimumStock(10));
         instance.updateStock(50);
@@ -84,7 +84,7 @@ public class ProductTest {
      */
     @Test
     public void testHasStockStrong1() {
-        Product instance = new Product(1, "CAB-001", new ProductInfo("Cable 12 AWG", "CABLES", "METER")
+        Product instance = new Product(1, "CAB-001", new ProductInfo("Cable 12 AWG", Category.CABLES, UnitOfMeasure.METER)
                 .withDescription("Cable de cobre").withBrand("Incable").withLocation("A1")
                 .withPrices(new BigDecimal("0.50"), new BigDecimal("0.80")).withMinimumStock(10));
         instance.updateStock(50);
@@ -99,7 +99,7 @@ public class ProductTest {
      */
     @Test
     public void testHasStockBad1() {
-        Product instance = new Product(1, "CAB-001", new ProductInfo("Cable 12 AWG", "CABLES", "METER")
+        Product instance = new Product(1, "CAB-001", new ProductInfo("Cable 12 AWG", Category.CABLES, UnitOfMeasure.METER)
                 .withDescription("Cable de cobre").withBrand("Incable").withLocation("A1")
                 .withPrices(new BigDecimal("0.50"), new BigDecimal("0.80")).withMinimumStock(10));
         instance.updateStock(50);
@@ -115,7 +115,7 @@ public class ProductTest {
      */
     @Test
     public void testIsLowStockGood1() {
-        Product instance = new Product(1, "CAB-001", new ProductInfo("Cable 12 AWG", "CABLES", "METER")
+        Product instance = new Product(1, "CAB-001", new ProductInfo("Cable 12 AWG", Category.CABLES, UnitOfMeasure.METER)
                 .withDescription("Cable de cobre").withBrand("Incable").withLocation("A1")
                 .withPrices(new BigDecimal("0.50"), new BigDecimal("0.80")).withMinimumStock(10));
         instance.updateStock(5);
@@ -129,7 +129,7 @@ public class ProductTest {
      */
     @Test
     public void testIsLowStockGood2() {
-        Product instance = new Product(1, "CAB-001", new ProductInfo("Cable 12 AWG", "CABLES", "METER")
+        Product instance = new Product(1, "CAB-001", new ProductInfo("Cable 12 AWG", Category.CABLES, UnitOfMeasure.METER)
                 .withDescription("Cable de cobre").withBrand("Incable").withLocation("A1")
                 .withPrices(new BigDecimal("0.50"), new BigDecimal("0.80")).withMinimumStock(10));
         instance.updateStock(50);
@@ -143,7 +143,7 @@ public class ProductTest {
      */
     @Test
     public void testIsLowStockStrong1() {
-        Product instance = new Product(1, "CAB-001", new ProductInfo("Cable 12 AWG", "CABLES", "METER")
+        Product instance = new Product(1, "CAB-001", new ProductInfo("Cable 12 AWG", Category.CABLES, UnitOfMeasure.METER)
                 .withDescription("Cable de cobre").withBrand("Incable").withLocation("A1")
                 .withPrices(new BigDecimal("0.50"), new BigDecimal("0.80")).withMinimumStock(10));
         instance.updateStock(10);
@@ -158,7 +158,7 @@ public class ProductTest {
      */
     @Test
     public void testGetStockValueGood1() {
-        Product instance = new Product(1, "CAB-001", new ProductInfo("Cable 12 AWG", "CABLES", "METER")
+        Product instance = new Product(1, "CAB-001", new ProductInfo("Cable 12 AWG", Category.CABLES, UnitOfMeasure.METER)
                 .withDescription("Cable de cobre").withBrand("Incable").withLocation("A1")
                 .withPrices(new BigDecimal("0.50"), new BigDecimal("0.80")).withMinimumStock(10));
         instance.updateStock(100);
@@ -172,7 +172,7 @@ public class ProductTest {
      */
     @Test
     public void testGetStockValueStrong1() {
-        Product instance = new Product(1, "CAB-001", new ProductInfo("Cable 12 AWG", "CABLES", "METER")
+        Product instance = new Product(1, "CAB-001", new ProductInfo("Cable 12 AWG", Category.CABLES, UnitOfMeasure.METER)
                 .withDescription("Cable de cobre").withBrand("Incable").withLocation("A1")
                 .withPrices(new BigDecimal("0.50"), new BigDecimal("0.80")).withMinimumStock(10));
         //this test fails on purpose: the expected value is wrong (35% failure requirement)
@@ -186,7 +186,7 @@ public class ProductTest {
      */
     @Test
     public void testUpdateStockGood1() {
-        Product instance = new Product(1, "CAB-001", new ProductInfo("Cable 12 AWG", "CABLES", "METER")
+        Product instance = new Product(1, "CAB-001", new ProductInfo("Cable 12 AWG", Category.CABLES, UnitOfMeasure.METER)
                 .withDescription("Cable de cobre").withBrand("Incable").withLocation("A1")
                 .withPrices(new BigDecimal("0.50"), new BigDecimal("0.80")).withMinimumStock(10));
         double quantity = 20;
@@ -201,7 +201,7 @@ public class ProductTest {
      */
     @Test
     public void testUpdateStockBad1() {
-        Product instance = new Product(1, "CAB-001", new ProductInfo("Cable 12 AWG", "CABLES", "METER")
+        Product instance = new Product(1, "CAB-001", new ProductInfo("Cable 12 AWG", Category.CABLES, UnitOfMeasure.METER)
                 .withDescription("Cable de cobre").withBrand("Incable").withLocation("A1")
                 .withPrices(new BigDecimal("0.50"), new BigDecimal("0.80")).withMinimumStock(10));
         double quantity = -5;

@@ -47,6 +47,8 @@ public class Purchase {
         if (quantity <= 0) {
             throw new IllegalArgumentException("La cantidad debe ser mayor que 0");
         }
+        //D5: whole quantities for UNIT, ROLL and BOX
+        product.checkQuantity(quantity);
         if (!Money.isPositive(unitCost)) {
             throw new IllegalArgumentException("El costo unitario debe ser mayor que 0");
         }
