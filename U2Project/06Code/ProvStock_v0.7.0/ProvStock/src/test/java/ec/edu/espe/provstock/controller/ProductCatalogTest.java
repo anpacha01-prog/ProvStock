@@ -1,10 +1,10 @@
 package ec.edu.espe.provstock.controller;
 
 import ec.edu.espe.provstock.model.Category;
-import ec.edu.espe.provstock.model.UnitOfMeasure;
-import java.math.BigDecimal;
 import ec.edu.espe.provstock.model.Product;
 import ec.edu.espe.provstock.model.ProductInfo;
+import ec.edu.espe.provstock.model.UnitOfMeasure;
+import java.math.BigDecimal;
 import org.junit.jupiter.api.Test;
 import static org.junit.jupiter.api.Assertions.*;
 
@@ -13,6 +13,13 @@ import static org.junit.jupiter.api.Assertions.*;
  * @author Paucar Matias, ByteWorks, @ESPE
  */
 public class ProductCatalogTest {
+
+    //P4 (D6): the control classes check permissions, so the tests log in as the owner
+    private static AccessManager ownerSession() {
+        AccessManager accessManager = new AccessManager();
+        accessManager.login("owner", "Owner2026");
+        return accessManager;
+    }
 
     private Product createProduct(String code, String name, Category category) {
         return new Product(0, code, new ProductInfo(name, category, UnitOfMeasure.UNIT)
@@ -25,7 +32,7 @@ public class ProductCatalogTest {
      */
     @Test
     public void testRegisterProductGood1() {
-        ProductCatalog instance = new ProductCatalog();
+        ProductCatalog instance = new ProductCatalog(ownerSession());
         Product product = createProduct("CAB-001", "Cable 12 AWG", Category.CABLES);
         instance.registerProduct(product);
         boolean expResult = true;
@@ -38,7 +45,7 @@ public class ProductCatalogTest {
      */
     @Test
     public void testRegisterProductBad1() {
-        ProductCatalog instance = new ProductCatalog();
+        ProductCatalog instance = new ProductCatalog(ownerSession());
         instance.registerProduct(createProduct("CAB-001", "Cable 12 AWG", Category.CABLES));
         Product repeated = createProduct("cab-001", "Cable 14 AWG", Category.CABLES);
         //this test fails on purpose: the expected exception is wrong (35% failure requirement)
@@ -50,7 +57,7 @@ public class ProductCatalogTest {
      */
     @Test
     public void testFindByCodeStrong1() {
-        ProductCatalog instance = new ProductCatalog();
+        ProductCatalog instance = new ProductCatalog(ownerSession());
         Product product = createProduct("CAB-001", "Cable 12 AWG", Category.CABLES);
         instance.registerProduct(product);
         Product expResult = product;
@@ -63,7 +70,7 @@ public class ProductCatalogTest {
      */
     @Test
     public void testSearchGood1() {
-        ProductCatalog instance = new ProductCatalog();
+        ProductCatalog instance = new ProductCatalog(ownerSession());
         instance.registerProduct(createProduct("CAB-001", "Cable 12 AWG", Category.CABLES));
         instance.registerProduct(createProduct("FOC-001", "Foco LED 9W", Category.LIGHTING));
         instance.registerProduct(createProduct("FOC-002", "Foco LED 12W", Category.LIGHTING));
@@ -77,7 +84,7 @@ public class ProductCatalogTest {
      */
     @Test
     public void testDeactivateProductGood1() {
-        ProductCatalog instance = new ProductCatalog();
+        ProductCatalog instance = new ProductCatalog(ownerSession());
         Product product = createProduct("CAB-001", "Cable 12 AWG", Category.CABLES);
         instance.registerProduct(product);
         instance.deactivateProduct(product);

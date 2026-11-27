@@ -10,12 +10,19 @@ import static org.junit.jupiter.api.Assertions.*;
  */
 public class CustomerManagerTest {
 
+    //P4 (D6): the control classes check permissions, so the tests log in as the owner
+    private static AccessManager ownerSession() {
+        AccessManager accessManager = new AccessManager();
+        accessManager.login("owner", "Owner2026");
+        return accessManager;
+    }
+
     /**
      * Test of getFinalConsumer method, of class CustomerManager.
      */
     @Test
     public void testGetFinalConsumerGood1() {
-        CustomerManager instance = new CustomerManager();
+        CustomerManager instance = new CustomerManager(ownerSession());
         String expResult = Customer.FINAL_CONSUMER_ID;
         String result = instance.getFinalConsumer().getIdentificationNumber();
         assertEquals(expResult, result);
@@ -26,7 +33,7 @@ public class CustomerManagerTest {
      */
     @Test
     public void testRegisterCustomerGood1() {
-        CustomerManager instance = new CustomerManager();
+        CustomerManager instance = new CustomerManager(ownerSession());
         Customer customer = new Customer(0, Customer.CEDULA, "1710034065", "Matias Paucar", "0991234567", "matias@espe.edu.ec", "Sangolqui");
         instance.registerCustomer(customer);
         boolean expResult = true;
@@ -39,7 +46,7 @@ public class CustomerManagerTest {
      */
     @Test
     public void testRegisterCustomerBad1() {
-        CustomerManager instance = new CustomerManager();
+        CustomerManager instance = new CustomerManager(ownerSession());
         Customer customer = new Customer(0, Customer.CEDULA, "1710034065", "Matias Paucar", "0991234567", "matias@espe.edu.ec", "Sangolqui");
         instance.registerCustomer(customer);
         Customer repeated = new Customer(0, Customer.CEDULA, "1710034065", "Otro Cliente", "", "", "");
@@ -52,7 +59,7 @@ public class CustomerManagerTest {
      */
     @Test
     public void testSearchByNameGood1() {
-        CustomerManager instance = new CustomerManager();
+        CustomerManager instance = new CustomerManager(ownerSession());
         Customer customer = new Customer(0, Customer.CEDULA, "1710034065", "Matias Paucar", "0991234567", "matias@espe.edu.ec", "Sangolqui");
         instance.registerCustomer(customer);
         int expResult = 1;

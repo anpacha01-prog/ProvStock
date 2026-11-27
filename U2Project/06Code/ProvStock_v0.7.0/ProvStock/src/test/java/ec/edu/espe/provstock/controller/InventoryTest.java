@@ -1,12 +1,12 @@
 package ec.edu.espe.provstock.controller;
 
 import ec.edu.espe.provstock.model.Category;
-import ec.edu.espe.provstock.model.UnitOfMeasure;
-import java.math.BigDecimal;
 import ec.edu.espe.provstock.model.Product;
 import ec.edu.espe.provstock.model.ProductInfo;
 import ec.edu.espe.provstock.model.Role;
+import ec.edu.espe.provstock.model.UnitOfMeasure;
 import ec.edu.espe.provstock.model.User;
+import java.math.BigDecimal;
 import java.util.Arrays;
 import org.junit.jupiter.api.Test;
 import static org.junit.jupiter.api.Assertions.*;
@@ -17,13 +17,20 @@ import static org.junit.jupiter.api.Assertions.*;
  */
 public class InventoryTest {
 
+    //P4 (D6): the control classes check permissions, so the tests log in as the owner
+    private static AccessManager ownerSession() {
+        AccessManager accessManager = new AccessManager();
+        accessManager.login("owner", "Owner2026");
+        return accessManager;
+    }
+
     private ProductCatalog catalog;
     private Inventory instance;
     private Product product;
 
     //creates the catalog, the inventory and one registered product
     private void createInventory() {
-        catalog = new ProductCatalog();
+        catalog = new ProductCatalog(ownerSession());
         instance = new Inventory(new StockMonitor(catalog), catalog);
         product = new Product(0, "CAB-001", new ProductInfo("Cable 12 AWG", Category.CABLES, UnitOfMeasure.METER)
                 .withDescription("").withBrand("Incable").withLocation("A1")

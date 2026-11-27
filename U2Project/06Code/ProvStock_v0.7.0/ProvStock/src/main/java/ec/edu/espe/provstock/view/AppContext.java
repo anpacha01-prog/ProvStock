@@ -19,17 +19,17 @@ import ec.edu.espe.provstock.persistence.FileManager;
 public class AppContext {
 
     private final InputReader input = new InputReader();
-    private final ProductCatalog productCatalog = new ProductCatalog();
+    private final AccessManager accessManager = new AccessManager();
+    private final ProductCatalog productCatalog = new ProductCatalog(accessManager);
     private final StockMonitor stockMonitor = new StockMonitor(productCatalog);
     private final Inventory inventory = new Inventory(stockMonitor, productCatalog);
-    private final AccessManager accessManager = new AccessManager();
-    private final CustomerManager customerManager = new CustomerManager();
+    private final CustomerManager customerManager = new CustomerManager(accessManager);
     private final SalesManager salesManager = new SalesManager(inventory, customerManager, accessManager);
     private final PurchasingManager purchasingManager = new PurchasingManager(inventory, accessManager);
     private final FileManager fileManager = new FileManager(accessManager, customerManager, productCatalog,
             inventory, salesManager, purchasingManager);
     private final ReportGenerator reportGenerator = new ReportGenerator(salesManager, purchasingManager,
-            productCatalog, fileManager);
+            productCatalog, fileManager, accessManager);
 
     public InputReader getInput() {
         return input;

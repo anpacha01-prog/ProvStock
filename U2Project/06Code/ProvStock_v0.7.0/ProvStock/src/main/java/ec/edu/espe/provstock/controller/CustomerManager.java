@@ -1,6 +1,7 @@
 package ec.edu.espe.provstock.controller;
 
 import ec.edu.espe.provstock.model.Customer;
+import ec.edu.espe.provstock.model.Role;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
@@ -8,6 +9,7 @@ import java.util.NoSuchElementException;
 
 /**
  * Registers, updates, searches and deactivates customers (UC-05). (RF02)
+ * The operations that change data check the permission of the logged-in user (Table 11, D6).
  *
  * @author Pachacama Andres, Parra Carlos, Paucar Matias, ByteWorks, @ESPE
  */
@@ -15,7 +17,11 @@ public class CustomerManager {
 
     private List<Customer> customers;
 
-    public CustomerManager() {
+    //directed association to AccessManager to check the permissions (note N8, D6)
+    private final AccessManager accessManager;
+
+    public CustomerManager(AccessManager accessManager) {
+        this.accessManager = accessManager;
         customers = new ArrayList<>();
         //FR-02.6: the "Consumidor Final" always exists
         customers.add(new Customer(1, Customer.RUC, Customer.FINAL_CONSUMER_ID, "CONSUMIDOR FINAL",
@@ -24,8 +30,10 @@ public class CustomerManager {
 
     /**
      * @throws IllegalArgumentException if the data is not valid or the identification already exists (BR-08)
+     * @throws SecurityException if the user can not manage customers
      */
     public void registerCustomer(Customer customer) {
+        accessManager.requirePermission(Role.MANAGE_CUSTOMERS);
         if (customer == null || !customer.validate()) {
             throw new IllegalArgumentException("Los datos del cliente no son válidos");
         }
@@ -38,6 +46,7 @@ public class CustomerManager {
     }
 
     public void updateCustomer(Customer customer) {
+        accessManager.requirePermission(Role.MANAGE_CUSTOMERS);
         if (!customers.contains(customer)) {
             throw new IllegalArgumentException("El cliente no existe");
         }
@@ -46,7 +55,11 @@ public class CustomerManager {
         }
     }
 
+    /**
+     * Only the owner can deactivate customers (permission DEACTIVATE_CUSTOMERS).
+     */
     public void deactivateCustomer(Customer customer) {
+        accessManager.requirePermission(Role.DEACTIVATE_CUSTOMERS);
         if (!customers.contains(customer)) {
             throw new IllegalArgumentException("El cliente no existe");
         }

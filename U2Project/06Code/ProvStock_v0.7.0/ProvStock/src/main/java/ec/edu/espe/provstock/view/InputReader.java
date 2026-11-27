@@ -3,6 +3,7 @@ package ec.edu.espe.provstock.view;
 import ec.edu.espe.provstock.model.Labeled;
 import ec.edu.espe.provstock.model.UnitOfMeasure;
 import ec.edu.espe.provstock.utils.Money;
+import java.io.Console;
 import java.math.BigDecimal;
 import java.time.LocalDate;
 import java.time.format.DateTimeParseException;
@@ -33,6 +34,46 @@ public class InputReader {
             System.exit(0);
         }
         return scanner.nextLine().trim();
+    }
+
+    /**
+     * CC-09, NFR-02: the password is hidden while it is written. Some IDE consoles
+     * (for example, NetBeans) have no System.console(); then the password is read
+     * as a normal text and the user is warned that it will be visible.
+     */
+    public String readPassword(String message) {
+        Console console = System.console();
+        if (!canHideText(console)) {
+            return readText(message.replace(": ", " (se verá en esta consola): "));
+        }
+        while (true) {
+            char[] password = console.readPassword("%s", message);
+            if (password == null) {
+                System.out.println();
+                System.exit(0);
+            }
+            if (password.length > 0) {
+                return new String(password);
+            }
+            System.out.println("  Este dato es obligatorio.");
+        }
+    }
+
+    /**
+     * From Java 22, System.console() is not null in an IDE, so isTerminal() (if it exists)
+     * says if the text can really be hidden. With Java 17 to 21, a console means a terminal.
+     */
+    private static boolean canHideText(Console console) {
+        if (console == null) {
+            return false;
+        }
+        try {
+            return (Boolean) Console.class.getMethod("isTerminal").invoke(console);
+        } catch (NoSuchMethodException e) {
+            return true;
+        } catch (ReflectiveOperationException e) {
+            return false;
+        }
     }
 
     /**

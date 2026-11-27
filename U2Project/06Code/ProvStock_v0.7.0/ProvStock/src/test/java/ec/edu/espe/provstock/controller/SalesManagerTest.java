@@ -1,11 +1,11 @@
 package ec.edu.espe.provstock.controller;
 
 import ec.edu.espe.provstock.model.Category;
-import ec.edu.espe.provstock.model.UnitOfMeasure;
-import java.math.BigDecimal;
 import ec.edu.espe.provstock.model.Product;
 import ec.edu.espe.provstock.model.ProductInfo;
 import ec.edu.espe.provstock.model.Sale;
+import ec.edu.espe.provstock.model.UnitOfMeasure;
+import java.math.BigDecimal;
 import org.junit.jupiter.api.Test;
 import static org.junit.jupiter.api.Assertions.*;
 
@@ -22,11 +22,11 @@ public class SalesManagerTest {
 
     //creates the managers, logs in as owner and registers one product with 100 units
     private void createSalesManager() {
-        catalog = new ProductCatalog();
         accessManager = new AccessManager();
         accessManager.login("owner", "Owner2026");
+        catalog = new ProductCatalog(accessManager);
         Inventory inventory = new Inventory(new StockMonitor(catalog), catalog);
-        instance = new SalesManager(inventory, new CustomerManager(), accessManager);
+        instance = new SalesManager(inventory, new CustomerManager(accessManager), accessManager);
         product = new Product(0, "CAB-001", new ProductInfo("Cable 12 AWG", Category.CABLES, UnitOfMeasure.METER)
                 .withDescription("").withBrand("Incable").withLocation("A1")
                 .withPrices(new BigDecimal("0.50"), new BigDecimal("0.80")).withMinimumStock(10));

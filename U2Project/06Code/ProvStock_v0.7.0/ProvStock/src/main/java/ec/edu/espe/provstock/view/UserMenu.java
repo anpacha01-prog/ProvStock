@@ -25,9 +25,9 @@ public class UserMenu {
     }
 
     public void changePassword() {
-        String current = input.readText("Contraseña actual: ");
-        String newPassword = input.readText(NEW_PASSWORD_PROMPT);
-        String confirm = input.readText("Confirme la nueva contraseña: ");
+        String current = input.readPassword("Contraseña actual: ");
+        String newPassword = input.readPassword(NEW_PASSWORD_PROMPT);
+        String confirm = input.readPassword("Confirme la nueva contraseña: ");
         if (accessManager.changeOwnPassword(current, newPassword, confirm)) {
             System.out.println("Contraseña cambiada correctamente.");
         } else {
@@ -58,7 +58,7 @@ public class UserMenu {
         String username = input.readText("Nombre de usuario: ");
         String fullName = input.readText("Nombre completo: ");
         Role role = readRole();
-        String password = input.readText("Contraseña inicial (mínimo " + User.MINIMUM_PASSWORD_LENGTH
+        String password = input.readPassword("Contraseña inicial (mínimo " + User.MINIMUM_PASSWORD_LENGTH
                 + " caracteres): ");
         User user = accessManager.createUser(username, fullName, role, password);
         System.out.println("Usuario creado: " + user.getUsername() + " (id " + user.getId() + ")");
@@ -84,7 +84,7 @@ public class UserMenu {
 
     private void resetUserPassword() {
         User user = findUser();
-        accessManager.resetPassword(user, input.readText(NEW_PASSWORD_PROMPT));
+        accessManager.resetPassword(user, input.readPassword(NEW_PASSWORD_PROMPT));
         System.out.println("Contraseña restablecida.");
     }
 

@@ -2,6 +2,7 @@ package ec.edu.espe.provstock.controller;
 
 import ec.edu.espe.provstock.model.Category;
 import ec.edu.espe.provstock.model.Product;
+import ec.edu.espe.provstock.model.Role;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
@@ -9,6 +10,7 @@ import java.util.NoSuchElementException;
 
 /**
  * Registers, updates, searches and deactivates products (UC-06, UC-07). (RF03)
+ * The operations that change data check the permission MANAGE_PRODUCTS (Table 11, D6).
  *
  * @author Pachacama Andres, Parra Carlos, Paucar Matias, ByteWorks, @ESPE
  */
@@ -16,14 +18,20 @@ public class ProductCatalog {
 
     private List<Product> products;
 
-    public ProductCatalog() {
+    //directed association to AccessManager to check the permissions (note N8, D6)
+    private final AccessManager accessManager;
+
+    public ProductCatalog(AccessManager accessManager) {
+        this.accessManager = accessManager;
         products = new ArrayList<>();
     }
 
     /**
      * @throws IllegalArgumentException if the data is not valid or the code already exists (BR-08)
+     * @throws SecurityException if the user can not manage products
      */
     public void registerProduct(Product product) {
+        accessManager.requirePermission(Role.MANAGE_PRODUCTS);
         if (product == null || !product.validate()) {
             throw new IllegalArgumentException("Los datos del producto no son válidos");
         }
@@ -35,6 +43,7 @@ public class ProductCatalog {
     }
 
     public void updateProduct(Product product) {
+        accessManager.requirePermission(Role.MANAGE_PRODUCTS);
         if (!products.contains(product)) {
             throw new IllegalArgumentException("El producto no existe");
         }
@@ -44,6 +53,7 @@ public class ProductCatalog {
     }
 
     public void deactivateProduct(Product product) {
+        accessManager.requirePermission(Role.MANAGE_PRODUCTS);
         if (!products.contains(product)) {
             throw new IllegalArgumentException("El producto no existe");
         }

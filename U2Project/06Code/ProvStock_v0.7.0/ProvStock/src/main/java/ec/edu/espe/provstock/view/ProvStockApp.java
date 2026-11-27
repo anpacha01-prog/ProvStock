@@ -70,6 +70,7 @@ public class ProvStockApp {
             fileManager.saveAll();
             System.out.println("Primera ejecución: se crearon los datos de prueba en la carpeta \""
                     + FileManager.DATA_FOLDER + "\".");
+            printTestUsers();
             return true;
         }
         try {
@@ -88,7 +89,14 @@ public class ProvStockApp {
         System.out.println("   ProvStock - Prov&Tec Materiales Eléctricos");
         System.out.println("   ByteWorks, ESPE");
         System.out.println("==============================================");
-        System.out.println("Usuarios de prueba (si no se cambiaron sus contraseñas):");
+    }
+
+    /**
+     * CC-10: the test passwords are shown only on the first run, when the sample data
+     * is created. They should be changed with the option "Cambiar mi contraseña".
+     */
+    private void printTestUsers() {
+        System.out.println("Usuarios de prueba (cambie sus contraseñas después del primer ingreso):");
         System.out.println("  owner     / Owner2026     (Propietario)");
         System.out.println("  vendedor  / Vendedor2026  (Vendedor)");
         System.out.println("  bodeguero / Bodega2026    (Bodeguero)");
@@ -118,7 +126,7 @@ public class ProvStockApp {
     // =====================================================================
     private boolean login() {
         String username = context.getInput().readText("Usuario: ");
-        String password = context.getInput().readText("Contraseña: ");
+        String password = context.getInput().readPassword("Contraseña: ");
         AccessManager accessManager = context.getAccessManager();
         if (!accessManager.login(username, password)) {
             System.out.println("Usuario o contraseña incorrectos, o la cuenta está inactiva.");
